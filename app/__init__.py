@@ -2,15 +2,15 @@ import os
 import subprocess
 import uuid
 from flask import Flask, request
-from flask_cors import cross_origin
+from flask_cors import CORS
 
 
 def create_app():
     app = Flask(__name__)
+    CORS(app)
 
     # a simple page that says hello
     @app.route('/hello')
-    @cross_origin()
     def hello():
         data = request.files
         file = data["contract"]
