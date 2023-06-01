@@ -9,4 +9,4 @@ COPY . .
 RUN pip3 install slither-analyzer && pip3 install -r requirements.txt
 
 
-CMD flask run -h 0.0.0.0 -p 8080
+CMD flask run -h 0.0.0.0 -p $PORT
