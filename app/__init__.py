@@ -42,7 +42,7 @@ def create_app():
         fp.close()
 
 
-        process = subprocess.run("slither ./{} --checklist".format(file.filename), stdout=subprocess.PIPE, shell=True)
+        process = subprocess.run("slither ./{} --checklist --filter-paths '@openzepellin/'".format(file.filename), stdout=subprocess.PIPE, shell=True)
         os.remove(file.filename)
         return process.stdout.decode()
 
