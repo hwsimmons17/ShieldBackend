@@ -14,8 +14,8 @@ def create_app():
     def hello():
         data = request.files
         file = data["contract"]
-        id = uuid.uuid4()
-        fp = open("{}.sol".format(str(id)), 'w')
+        # id = uuid.uuid4()
+        fp = open(file.filename, 'w')
         for i,line in enumerate(file):
             if i == 0:
                 version = line.decode().replace("pragma solidity ^", "")
@@ -24,8 +24,8 @@ def create_app():
             fp.write(line.decode())
         fp.close()
 
-        process = subprocess.run("slither ./{}.sol --checklist".format(str(id)), stdout=subprocess.PIPE, shell=True)
-        os.remove("{}.sol".format(str(id)))
+        process = subprocess.run("slither ./{} --checklist".format(file.filename), stdout=subprocess.PIPE, shell=True)
+        os.remove(file.filename)
         return process.stdout.decode()
 
     return app
