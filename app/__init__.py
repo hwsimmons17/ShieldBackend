@@ -26,7 +26,7 @@ def create_app():
 
         process = subprocess.run("slither ./{}.sol --checklist".format(str(id)), stdout=subprocess.PIPE, shell=True)
         os.remove("{}.sol".format(str(id)))
-        return str(process.stdout)
+        return process.stdout.decode()
 
     return app
 
