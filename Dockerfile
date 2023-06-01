@@ -1,6 +1,6 @@
 FROM node
 RUN apt-get update || : && apt-get install python3 -y && \
-npm install -g solc
+npm install -g solc && npm install @openzeppelin/contracts
 
 RUN apt-get install python3-pip -y
 

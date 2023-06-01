@@ -1,8 +1,23 @@
 import os
+import re
 import subprocess
 import uuid
 from flask import Flask, request
 from flask_cors import CORS
+
+
+regex = re.compile(
+    r'^(?P<major>0|[1-9]\d*)'
+    r'\.'
+    r'(?P<minor>0|[1-9]\d*)'
+    r'\.'
+    r'(?P<patch>0|[1-9]\d*)'
+    r'(?:-'
+    r'(?P<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)'
+    r'(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?'
+    r'(?:\+'
+    r'(?P<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$'
+)
 
 
 def create_app():
@@ -16,13 +31,16 @@ def create_app():
         file = data["contract"]
         # id = uuid.uuid4()
         fp = open(file.filename, 'w')
-        for i,line in enumerate(file):
-            if i == 0:
+        for line in file:
+            version = line.decode().replace("pragma solidity ^", "")
+            version = version.replace(";\n", "")
+            if regex.match(version):
                 version = line.decode().replace("pragma solidity ^", "")
                 version = version.replace(";\n", "")
                 subprocess.run("solc-select use {} --always-install".format(version), shell=True)
             fp.write(line.decode())
         fp.close()
+
 
         process = subprocess.run("slither ./{} --checklist".format(file.filename), stdout=subprocess.PIPE, shell=True)
         os.remove(file.filename)
