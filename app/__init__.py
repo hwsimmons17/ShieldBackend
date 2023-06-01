@@ -10,7 +10,7 @@ def create_app():
     CORS(app)
 
     # a simple page that says hello
-    @app.route('/hello')
+    @app.route('/hello', methods = ['POST'])
     def hello():
         data = request.files
         file = data["contract"]
