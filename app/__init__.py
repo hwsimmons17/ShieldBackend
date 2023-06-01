@@ -2,6 +2,7 @@ import os
 import subprocess
 import uuid
 from flask import Flask, request
+from flask_cors import cross_origin
 
 
 def create_app():
@@ -9,6 +10,7 @@ def create_app():
 
     # a simple page that says hello
     @app.route('/hello')
+    @cross_origin()
     def hello():
         data = request.files
         file = data["contract"]
