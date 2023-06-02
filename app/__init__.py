@@ -38,7 +38,8 @@ def create_app():
                 version = line.decode().replace("pragma solidity ^", "")
                 version = version.replace(";\n", "")
                 subprocess.run("solc-select use {} --always-install".format(version), shell=True)
-            fp.write(line.decode())
+            
+            fp.write(line.decode().replace("@openzeppelin", "node_modules/@openzeppelin"))
         fp.close()
 
 
